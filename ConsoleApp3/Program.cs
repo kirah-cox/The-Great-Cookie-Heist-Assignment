@@ -13,19 +13,31 @@
         Kid kid6 = new Kid("Jeannette");
         Kid kid7 = new Kid("Ella");
 
-        var task1 = CookieJar.GrabCookies(kid1.Name);
-        var task2 = CookieJar.GrabCookies(kid2.Name);
-        var task3 = CookieJar.GrabCookies(kid3.Name);
-        var task4 = CookieJar.GrabCookies(kid4.Name);
-        var task5 = CookieJar.GrabCookies(kid5.Name);
-        var task6 = CookieJar.GrabCookies(kid6.Name);
-        var task7 = CookieJar.GrabCookies(kid7.Name);
-
+        var task1 = kid1.GrabOneCookie();
+        var task2 = kid2.GrabOneCookie();
+        var task3 = kid3.GrabOneCookie();
+        var task4 = kid4.GrabOneCookie();
+        var task5 = kid5.GrabOneCookie();
+        var task6 = kid6.GrabOneCookie();
+        var task7 = kid7.GrabOneCookie();
+        
         await Task.WhenAll(task1, task2, task3, task4, task5, task6, task7);
 
+        //int[] numberOfCookies = new int[7]
+        //       {
+        //           kid1.CookiesGrabbed,
+        //           kid1.CookiesGrabbed,
+        //           kid1.CookiesGrabbed,
+        //           kid1.CookiesGrabbed,
+        //           kid1.CookiesGrabbed,
+        //           kid1.CookiesGrabbed,
+        //           kid1.CookiesGrabbed,
+        //       };
+
+
+
+        Console.WriteLine(Kid.CookiesGrabbed);
     }
-
-
 }
 
 public class CookieJar
@@ -38,12 +50,14 @@ public class CookieJar
     }
     public static async Task GrabCookies(string name)
     {
-        Console.WriteLine($"{name} goes to take a cookie.");
-
         Random rand = new Random();
         int randomDely = rand.Next(500, 6001);
         await Task.Delay(randomDely);
-        
+
+        Console.WriteLine($"{name} goes to take a cookie.");
+
+        await Task.Delay(randomDely);
+
         if (Cookies == 0)
         {
             Console.WriteLine($"There are no cookies left! {name} goes away sadly.");
@@ -57,7 +71,7 @@ public class CookieJar
     }
 }
 
-class Kid : CookieJar
+class Kid
 {
     public string Name { get; set; }
     public static int CookiesGrabbed { get; set; }
@@ -66,5 +80,15 @@ class Kid : CookieJar
     {
         Name = name;
         CookiesGrabbed = 0;
+
+    }
+
+    public async Task GrabOneCookie()
+    {
+        while (CookieJar.Cookies != 0)
+        {
+            CookieJar.GrabCookies(Name);
+            CookiesGrabbed++;
+        }
     }
 }
