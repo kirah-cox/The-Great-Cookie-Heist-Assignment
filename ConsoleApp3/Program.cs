@@ -23,20 +23,21 @@
         
         await Task.WhenAll(task1, task2, task3, task4, task5, task6, task7);
 
-        //int[] numberOfCookies = new int[7]
-        //       {
-        //           kid1.CookiesGrabbed,
-        //           kid1.CookiesGrabbed,
-        //           kid1.CookiesGrabbed,
-        //           kid1.CookiesGrabbed,
-        //           kid1.CookiesGrabbed,
-        //           kid1.CookiesGrabbed,
-        //           kid1.CookiesGrabbed,
-        //       };
+        List<Kid> numberOfCookies = new List<Kid>()
+        {
+            { kid1 },
+            { kid2 },
+            { kid3 },
+            { kid4 },
+            { kid5 },
+            { kid6 },
+            { kid7 },
+        };
 
+        var numberOfCookiesSorted = numberOfCookies.OrderBy(kid => kid.CookiesGrabbed).ToList();
 
-
-        Console.WriteLine(Kid.CookiesGrabbed);
+        Console.WriteLine(kid1.CookiesGrabbed);
+        Console.WriteLine($"{numberOfCookiesSorted.Last().Name} grabbed {numberOfCookiesSorted.Last().CookiesGrabbed} cookies, which was the most cookies grabbed!");
     }
 }
 
@@ -65,7 +66,6 @@ public class CookieJar
         }
 
         Cookies--;
-        Kid.CookiesGrabbed++;
 
         Console.WriteLine($"{name} took a cookie. There are {Cookies} left.");
     }
@@ -74,20 +74,19 @@ public class CookieJar
 class Kid
 {
     public string Name { get; set; }
-    public static int CookiesGrabbed { get; set; }
+    public int CookiesGrabbed { get; set; }
 
     public Kid(string name)
     {
         Name = name;
         CookiesGrabbed = 0;
-
     }
 
     public async Task GrabOneCookie()
     {
         while (CookieJar.Cookies != 0)
         {
-            CookieJar.GrabCookies(Name);
+            await CookieJar.GrabCookies(Name);
             CookiesGrabbed++;
         }
     }
