@@ -36,8 +36,13 @@
 
         var numberOfCookiesSorted = numberOfCookies.OrderBy(kid => kid.CookiesGrabbed).ToList();
 
-        Console.WriteLine(kid1.CookiesGrabbed);
-        Console.WriteLine($"{numberOfCookiesSorted.Last().Name} grabbed {numberOfCookiesSorted.Last().CookiesGrabbed} cookies, which was the most cookies grabbed!");
+        foreach (var kid in numberOfCookiesSorted)
+        {
+            if (kid.CookiesGrabbed == numberOfCookiesSorted.Last().CookiesGrabbed)
+            {
+                Console.WriteLine($"{kid.Name} grabbed {kid.CookiesGrabbed} cookies, which was the most cookies grabbed!");
+            }
+        }
     }
 }
 
